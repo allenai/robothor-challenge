@@ -99,7 +99,33 @@ The agent will have access to the episode as a member variable ```agent.episode`
 
 When you have a model to evaluate, modify the Dockerfile to copy any files and update the requirements.txt as needed. Once you have built the image, you can run the evaluation script to calculate the SPL value.
 
-## Repository Structure
+## Dataset
+
+The dataset consists of 25074 training episodes and 6290 val episodes where each episode consists of an agent starting position/rotation and target object.  
+
+The following target object types exist in the dataset:
+* Alarm Clock
+* Apple
+* Baseball Bat
+* Basketball
+* Garbage Can
+* House Plant
+* Laptop
+* Mug
+* Spray Bottle
+* Television
+* Vase
+
+| Split | Difficulty | Total |
+| ----- |:----------:|:-----:|
+|Train|easy| 8125 | 
+|Train|medium| 8125 | 
+|Train|hard| 8824| 
+|Val|easy| 2038 | 
+|Val|medium| 2038 | 
+|Val|hard| 2214| 
+
+
 
 All the episodes for each split (train/val) can be found within the dataset/{train/val}.json files.  Configuration parameters for the environment can be found within dataset/challenge_config.yaml.  These are the same values that will be used for generating the leaderboard.  You are free to train your model with whatever parameters you choose, but these params will be reset to the original values for leaderboard evaluation.
 
