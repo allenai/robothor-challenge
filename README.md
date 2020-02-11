@@ -112,6 +112,3 @@ We will be using [EvalAI](https://evailai.cloudcv.org) to host the challenge.  T
 
 XXX evalai/rishab
 
-## References
-
-XXX AI2THOR CITATION
