@@ -6,6 +6,7 @@
 
 # RoboTHOR-Challenge
 
+Welcome to the RoboTHOR Challenge.  The task for the RoboTHOR Challenge is to build a model/agent that can accept a task to find a particular object in a room using the [Ai2THOR](https://ai2thor.allenai.org) embodied agent environment.  Please follow the instructions below to get started.
 
 ## Installation
 
@@ -13,7 +14,7 @@ To begin working on your own model you must have Docker installed on your host a
 
 
 Clone or fork this repository
-```
+```bash
 git clone https://github.com/allenai/robothor-challenge
 ```
 
@@ -42,7 +43,7 @@ At this point you should see log messages that resemble the following:
 
 Your model must subclass ```robothor_challenge.agent.Agent``` and implement the method ```on_event```. The following agent (found in example_agent.py) takes a random action on each event:
 
-```
+```python
 from robothor_challenge.agent import Agent
 from robothor_challenge import RobothorChallenge
 import random
@@ -62,7 +63,7 @@ if __name__ == '__main__':
 ```
 
 The agent will have access to the episode as a member variable ```agent.episode```.  The structure of each episode is as follows:
-```
+```json
  {
         "difficulty": "easy",
         "id": 0,
@@ -99,7 +100,33 @@ The agent will have access to the episode as a member variable ```agent.episode`
 
 When you have a model to evaluate, modify the Dockerfile to copy any files and update the requirements.txt as needed. Once you have built the image, you can run the evaluation script to calculate the SPL value.
 
-## Repository Structure
+## Dataset
+
+The dataset consists of 25074 training episodes and 6290 val episodes where each episode consists of an agent starting position/rotation and target object.  
+
+The following target object types exist in the dataset:
+* Alarm Clock
+* Apple
+* Baseball Bat
+* Basketball
+* Garbage Can
+* House Plant
+* Laptop
+* Mug
+* Spray Bottle
+* Television
+* Vase
+
+| Split | Difficulty | Total |
+| ----- |:----------:|:-----:|
+|Train|easy| 8125 | 
+|Train|medium| 8125 | 
+|Train|hard| 8824| 
+|Val|easy| 2038 | 
+|Val|medium| 2038 | 
+|Val|hard| 2214| 
+
+
 
 All the episodes for each split (train/val) can be found within the dataset/{train/val}.json files.  Configuration parameters for the environment can be found within dataset/challenge_config.yaml.  These are the same values that will be used for generating the leaderboard.  You are free to train your model with whatever parameters you choose, but these params will be reset to the original values for leaderboard evaluation.
 
@@ -112,6 +139,3 @@ We will be using [EvalAI](https://evailai.cloudcv.org) to host the challenge.  T
 
 XXX evalai/rishab
 
-## References
-
-XXX AI2THOR CITATION
