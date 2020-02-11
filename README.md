@@ -13,7 +13,7 @@ To begin working on your own model you must have Docker installed on your host a
 
 
 Clone or fork this repository
-```
+```bash
 git clone https://github.com/allenai/robothor-challenge
 ```
 
@@ -42,7 +42,7 @@ At this point you should see log messages that resemble the following:
 
 Your model must subclass ```robothor_challenge.agent.Agent``` and implement the method ```on_event```. The following agent (found in example_agent.py) takes a random action on each event:
 
-```
+```python
 from robothor_challenge.agent import Agent
 from robothor_challenge import RobothorChallenge
 import random
@@ -62,7 +62,7 @@ if __name__ == '__main__':
 ```
 
 The agent will have access to the episode as a member variable ```agent.episode```.  The structure of each episode is as follows:
-```
+```json
  {
         "difficulty": "easy",
         "id": 0,
