@@ -6,6 +6,7 @@
 
 # RoboTHOR-Challenge
 
+Welcome to the RoboTHOR Challenge.  The task for the RoboTHOR Challenge is to build a model/agent that can accept a task to find a particular object in a room using the [Ai2THOR](https://ai2thor.allenai.org) embodied agent environment.  Please follow the instructions below to get started.
 
 ## Installation
 
