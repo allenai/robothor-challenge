@@ -47,8 +47,6 @@ class RobothorChallenge:
             episode_result = dict(shortest_path= e['shortest_path'], success=False, path=[])
             episode_results.append(episode_result)
             agent = self.agent_cls(e)
-            # XXX XXX REMOVE
-            e['id'] = 0
             logger.info("Task Start id:{id} scene:{scene} target_object:{object_id} initial_position:{initial_position} rotation:{initial_orientation}".format(**e))
             self.controller.reset(e['scene'])
             teleport_action = dict(action='TeleportFull')
@@ -60,13 +58,9 @@ class RobothorChallenge:
 
             stopped = False
             while total_steps < self.config['max_steps'] and not stopped:
+                total_steps +=1 
                 action = agent.on_event(self.controller.last_event)
                 logger.info("Agent action: {action}".format(**action))
-
-                if action['action'] == 'Stop':
-                    stopped = True
-                    break
-
                 event = self.controller.step(action)
                 stopped = event.metadata['lastAction'] == 'Stop'
                 episode_result['path'].append(self.controller.last_event.metadata['agent']['position'])
