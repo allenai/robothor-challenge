@@ -21,20 +21,27 @@ ALLOWED_ACTIONS =  ['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'LookU
 class RobothorChallenge:
 
     def __init__(self, agent_cls):
-        self.setup_env()
         self.agent_cls = agent_cls
         self.load_config()
-        self.controller = ai2thor.controller.Controller(width=self.config['width'], height=self.config['height'], **self.config['initialize'])
+        if self.dataset_split == 'test':
+            self.controller = ai2thor.controller.Controller(start_unity=False, port=8200, width=self.config['width'], height=self.config['height'], **self.config['initialize'])
+        else:
+            self.setup_env()
+            self.controller = ai2thor.controller.Controller(width=self.config['width'], height=self.config['height'], **self.config['initialize'])
+
+    @property
+    def dataset_split(self):
+        if 'CHALLENGE_SPLIT' not in os.environ:
+            raise ValueError("CHALLENGE_SPLIT not in environment")
+        return os.environ['CHALLENGE_SPLIT']
 
     def load_config(self):
         if 'CHALLENGE_CONFIG' not in os.environ:
             raise ValueError("CHALLENGE_CONFIG not in environment")
 
-        if 'CHALLENGE_SPLIT' not in os.environ:
-            raise ValueError("CHALLENGE_SPLIT not in environment")
 
         logger.info("Loading configuration from: {CHALLENGE_CONFIG}".format(**os.environ))
-        split_path = os.path.join(os.path.dirname(os.environ['CHALLENGE_CONFIG']), os.environ['CHALLENGE_SPLIT'] + ".json")
+        split_path = os.path.join(os.path.dirname(os.environ['CHALLENGE_CONFIG']),  self.dataset_split + ".json")
         logger.info("Loading split: {path}".format(path=split_path))
         with open(os.environ['CHALLENGE_CONFIG']) as f:
             self.config = yaml.safe_load(f.read())
