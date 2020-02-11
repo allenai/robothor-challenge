@@ -63,20 +63,20 @@ if __name__ == '__main__':
 ```
 
 The agent will have access to the episode as a member variable ```agent.episode```.  The structure of each episode is as follows:
-```json
+```javascript
  {
-        "difficulty": "easy", 
+        "difficulty": "easy", // Task difficulty
         "id": 0,
-        "initial_orientation": 180,
-        "initial_position": {
+        "initial_orientation": 180, // Initial orientation of the agent
+        "initial_position": { // Initial position of the agent
             "x": 3.0,
             "y": 0.910344243,
             "z": -1.75
         },
-        "object_id": "Apple|+01.98|+00.77|-01.75",
-        "object_type": "Apple",
-        "scene": "FloorPlan_Train1_1",
-        "shortest_path": [
+        "object_id": "Apple|+01.98|+00.77|-01.75", // Id of the target object
+        "object_type": "Apple", // Target object category
+        "scene": "FloorPlan_Train1_1", // Name of the scene
+        "shortest_path": [ // Coordinates of the points along the shortest path
             {
                 "x": 3.0,
                 "y": 0.0103442669,
@@ -88,8 +88,8 @@ The agent will have access to the episode as a member variable ```agent.episode`
                 "z": -1.75
             }
         ],
-        "shortest_path_length": 0.25,
-        "target_position": {
+        "shortest_path_length": 0.25, // Length of the shortest path
+        "target_position": { // Position of the target
             "x": 1.979,
             "y": 0.7714,
             "z": -1.753
