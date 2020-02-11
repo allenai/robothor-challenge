@@ -20,7 +20,7 @@ git clone https://github.com/allenai/robothor-challenge
 
 Build the Docker container
 ```
-cd robothor-challenge;
+cd robothor-challenge
 ./scripts/build.sh
 ```
 
