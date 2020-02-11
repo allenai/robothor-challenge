@@ -61,6 +61,9 @@ class RobothorChallenge:
             stopped = False
             while total_steps < self.config['max_steps'] and not stopped:
                 total_steps +=1 
+                event = self.controller.last_event
+                # must clear out metadata during inference 
+                event.metadata.clear()
                 action = agent.on_event(self.controller.last_event)
                 if action not in ALLOWED_ACTIONS:
                     raise ValueError("Invalid action: {action}".format(action=action))
