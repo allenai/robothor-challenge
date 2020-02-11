@@ -65,7 +65,7 @@ if __name__ == '__main__':
 The agent will have access to the episode as a member variable ```agent.episode```.  The structure of each episode is as follows:
 ```json
  {
-        "difficulty": "easy", # Task difficulty
+        "difficulty": "easy", 
         "id": 0,
         "initial_orientation": 180,
         "initial_position": {
