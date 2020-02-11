@@ -61,7 +61,6 @@ EndSection
     xorg_conf.append(server_layout_section.format(screen_records="\n    ".join(screen_records)))
 
     output =  "\n".join(xorg_conf)
-    print(output)
     return output
 
 def startx(display=0):

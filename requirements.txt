@@ -1,1 +1,2 @@
 ai2thor==2.2.0
+pyyaml

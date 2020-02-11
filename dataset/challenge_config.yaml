@@ -1,0 +1,8 @@
+initialize:
+    rotateStepDegrees: 30
+    visibilityDistance: 1.0
+    gridSize: 0.25
+
+width: 640
+height: 480
+max_steps: 500
