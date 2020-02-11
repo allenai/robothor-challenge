@@ -8,7 +8,7 @@ logging.getLogger().setLevel(logging.INFO)
 class SimpleRandomAgent(Agent):
 
     def on_event(self, event):
-        action = dict(action=random.choice(['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'Stop']))
+        action = random.choice(['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'LookUp', 'LookDown', 'Stop'])
         return action
 
 

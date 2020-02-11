@@ -16,6 +16,8 @@ formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(name)s - %(message)
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
+ALLOWED_ACTIONS =  ['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'LookUp', 'LookDown', 'Stop']
+
 class RobothorChallenge:
 
     def __init__(self, agent_cls):
@@ -60,9 +62,12 @@ class RobothorChallenge:
             while total_steps < self.config['max_steps'] and not stopped:
                 total_steps +=1 
                 action = agent.on_event(self.controller.last_event)
-                logger.info("Agent action: {action}".format(**action))
-                event = self.controller.step(action)
-                stopped = event.metadata['lastAction'] == 'Stop'
+                if action not in ALLOWED_ACTIONS:
+                    raise ValueError("Invalid action: {action}".format(action=action))
+
+                logger.info("Agent action: {action}".format(action=action))
+                event = self.controller.step(action=action)
+                stopped = action == 'Stop'
                 episode_result['path'].append(self.controller.last_event.metadata['agent']['position'])
 
             if stopped:
