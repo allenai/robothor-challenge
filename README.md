@@ -6,7 +6,7 @@
 
 # RoboTHOR-Challenge
 
-Welcome to the RoboTHOR Challenge.  The task for the RoboTHOR Challenge is to build a model/agent that can accept a task to find a particular object in a room using the [Ai2THOR](https://ai2thor.allenai.org) embodied agent environment.  Please follow the instructions below to get started.
+Welcome to the RoboTHOR Challenge. The task for the RoboTHOR Challenge is to build a model/agent that can navigate towards a particular object in a room using the [RoboTHOR](https://ai2thor.allenai.org) embodied agent environment. Please follow the instructions below to get started.
 
 ## Installation
 
@@ -41,7 +41,7 @@ At this point you should see log messages that resemble the following:
 
 ## Model
 
-Your model must subclass ```robothor_challenge.agent.Agent``` and implement the method ```on_event```. The following agent (found in example_agent.py) takes a random action on each event:
+Your model must subclass ```robothor_challenge.agent.Agent``` and implement the method ```on_event```. For an episode to be successful, the agent must be within 1 meter of the target object and the object must also be visible to the agent.  To declare success, respond with the ```Stop``` action.  If ```Stop``` is not sent within the maxmimum number of steps (100 max), the episode will be considered failed and the next episode will be initialized.  The following agent (found in example_agent.py) takes a random action on each event:
 
 ```python
 from robothor_challenge.agent import Agent
@@ -54,7 +54,7 @@ logging.getLogger().setLevel(logging.INFO)
 class SimpleRandomAgent(Agent):
 
     def on_event(self, event):
-        action = dict(action=random.choice(['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'Stop']))
+        action = random.choice(['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'LookUp', 'LookDown', 'Stop'])
         return action
 
 if __name__ == '__main__':
@@ -63,20 +63,20 @@ if __name__ == '__main__':
 ```
 
 The agent will have access to the episode as a member variable ```agent.episode```.  The structure of each episode is as follows:
-```json
+```javascript
  {
-        "difficulty": "easy",
+        "difficulty": "easy", // Task difficulty
         "id": 0,
-        "initial_orientation": 180,
-        "initial_position": {
+        "initial_orientation": 180, // Initial orientation of the agent
+        "initial_position": { // Initial position of the agent
             "x": 3.0,
             "y": 0.910344243,
             "z": -1.75
         },
-        "object_id": "Apple|+01.98|+00.77|-01.75",
-        "object_type": "Apple",
-        "scene": "FloorPlan_Train1_1",
-        "shortest_path": [
+        "object_id": "Apple|+01.98|+00.77|-01.75", // Id of the target object
+        "object_type": "Apple", // Target object category
+        "scene": "FloorPlan_Train1_1", // Name of the scene
+        "shortest_path": [ // Coordinates of the points along the shortest path
             {
                 "x": 3.0,
                 "y": 0.0103442669,
@@ -88,8 +88,8 @@ The agent will have access to the episode as a member variable ```agent.episode`
                 "z": -1.75
             }
         ],
-        "shortest_path_length": 0.25,
-        "target_position": {
+        "shortest_path_length": 0.25, // Length of the shortest path
+        "target_position": { // Position of the target
             "x": 1.979,
             "y": 0.7714,
             "z": -1.753
@@ -132,10 +132,10 @@ All the episodes for each split (train/val) can be found within the dataset/{tra
 
 ## Challenge Submissions
 
-We will be using [EvalAI](https://evailai.cloudcv.org) to host the challenge.  The first phase of the challenge will begin XXX date XXX.  You will be submitting your docker image for evaluation using the evalai CLI.  During leaderboard evaluation, separate scenes/points will be used to determine your score.
+We will be using [EvalAI](https://evailai.cloudcv.org) to host the challenge.  The first phase of the challenge will begin on Feb 11, 2020. You will be submitting your docker image for evaluation using the EvalAI CLI.  During leaderboard evaluation, separate scenes/points will be used to determine your score.
 
 
 ## Acknowledgments
 
-XXX evalai/rishab
+We would like to thank Rishabh Jain for the help for setting up the EvalAI leaderboard.
 
