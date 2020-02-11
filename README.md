@@ -6,7 +6,7 @@
 
 # RoboTHOR-Challenge
 
-Welcome to the RoboTHOR Challenge.  The task for the RoboTHOR Challenge is to build a model/agent that can accept a task to find a particular object in a room using the [Ai2THOR](https://ai2thor.allenai.org) embodied agent environment.  Please follow the instructions below to get started.
+Welcome to the RoboTHOR Challenge. The task for the RoboTHOR Challenge is to build a model/agent that can navigate towards a particular object in a room using the [RoboTHOR](https://ai2thor.allenai.org) embodied agent environment. Please follow the instructions below to get started.
 
 ## Installation
 
@@ -41,7 +41,7 @@ At this point you should see log messages that resemble the following:
 
 ## Model
 
-Your model must subclass ```robothor_challenge.agent.Agent``` and implement the method ```on_event```. For an episode to be successful, the agent must be within 1 meter of the target object and the object must also be visible to the agent.  To declare success, respond with the ```Stop``` action.  If ```Stop``` is not sent within the maxmimum number of steps (500 max), the episode will be considered failed and the next episode will be initialized.  The following agent (found in example_agent.py) takes a random action on each event:
+Your model must subclass ```robothor_challenge.agent.Agent``` and implement the method ```on_event```. For an episode to be successful, the agent must be within 1 meter of the target object and the object must also be visible to the agent.  To declare success, respond with the ```Stop``` action.  If ```Stop``` is not sent within the maxmimum number of steps (100 max), the episode will be considered failed and the next episode will be initialized.  The following agent (found in example_agent.py) takes a random action on each event:
 
 ```python
 from robothor_challenge.agent import Agent
