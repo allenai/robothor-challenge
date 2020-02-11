@@ -41,7 +41,7 @@ At this point you should see log messages that resemble the following:
 
 ## Model
 
-Your model must subclass ```robothor_challenge.agent.Agent``` and implement the method ```on_event```. The following agent (found in example_agent.py) takes a random action on each event:
+Your model must subclass ```robothor_challenge.agent.Agent``` and implement the method ```on_event```. For an episode to be successful, the agent must be within 1m of the target object and the object must also be visible to the agent.  To declare success, respond with the ```Stop``` action.  If ```Stop``` is not sent within the maxmimum number of steps (500 max), the episode will be considered failed and the next episode will be initialized.  The following agent (found in example_agent.py) takes a random action on each event:
 
 ```python
 from robothor_challenge.agent import Agent
@@ -54,7 +54,7 @@ logging.getLogger().setLevel(logging.INFO)
 class SimpleRandomAgent(Agent):
 
     def on_event(self, event):
-        action = dict(action=random.choice(['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'Stop']))
+        action = random.choice(['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'LookUp', 'LookDown', 'Stop'])
         return action
 
 if __name__ == '__main__':
