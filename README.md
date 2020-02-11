@@ -132,10 +132,10 @@ All the episodes for each split (train/val) can be found within the dataset/{tra
 
 ## Challenge Submissions
 
-We will be using [EvalAI](https://evailai.cloudcv.org) to host the challenge.  The first phase of the challenge will begin XXX date XXX.  You will be submitting your docker image for evaluation using the evalai CLI.  During leaderboard evaluation, separate scenes/points will be used to determine your score.
+We will be using [EvalAI](https://evailai.cloudcv.org) to host the challenge.  The first phase of the challenge will begin on Feb 11, 2020. You will be submitting your docker image for evaluation using the EvalAI CLI.  During leaderboard evaluation, separate scenes/points will be used to determine your score.
 
 
 ## Acknowledgments
 
-XXX evalai/rishab
+We would like to thank Rishabh Jain for the help for setting up the EvalAI leaderboard.
 
