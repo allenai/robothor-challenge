@@ -57,6 +57,7 @@ class RobothorChallenge:
             episode_results.append(episode_result)
             agent = self.agent_cls(e)
             logger.info("Task Start id:{id} scene:{scene} target_object:{object_id} initial_position:{initial_position} rotation:{initial_orientation}".format(**e))
+            self.controller.initialization_parameters['robothorChallengeEpisodeId'] = e['id']
             self.controller.reset(e['scene'])
             teleport_action = dict(action='TeleportFull')
             teleport_action.update(e['initial_position'])
