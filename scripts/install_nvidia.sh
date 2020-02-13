@@ -7,6 +7,8 @@ s3_driver_url="http://ai2-vision-nvidia.s3-us-west-2.amazonaws.com/$driver_filen
 wget $driver_url -P /root/ || wget $s3_driver_url -P /root/
 
 if [ $?  -eq 0 ]; then
+    sh /root/$driver_filename -s --no-kernel-module
+else
     echo "Error trying to install nvidia driver for $nvidia_version"
     exit 1
 fi;
