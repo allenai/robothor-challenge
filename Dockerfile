@@ -5,6 +5,7 @@ FROM nvidia/cuda:$CUDA_VERSION-devel-ubuntu18.04
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -y install python3-pip libxrender1 libsm6 xserver-xorg-core xorg python3-venv vim pciutils wget git module-init-tools
 
+ENV APP_HOME /app
 WORKDIR $APP_HOME
 COPY requirements.txt scripts/install_nvidia.sh /app/
 RUN pip3 install -r requirements.txt && python3 -c "import ai2thor.controller; ai2thor.controller.Controller(download_only=True)"
