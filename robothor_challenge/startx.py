@@ -7,7 +7,6 @@ import tempfile
 import threading
 import os
 import sys
-import ai2thor.controller
 
 def pci_records():
     records = []
