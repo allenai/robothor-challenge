@@ -1,8 +1,8 @@
 ARG CUDA_VERSION
-ENV DEBIAN_FRONTEND=noninteractive
 
 FROM nvidia/cuda:$CUDA_VERSION-devel-ubuntu18.04
 
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -y install python3-pip libxrender1 libsm6 xserver-xorg-core xorg python3-venv vim pciutils wget git module-init-tools
 
 WORKDIR $APP_HOME
