@@ -1,5 +1,5 @@
 FROM nvidia/cuda:10.2-devel-ubuntu18.04
-
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -y install python3-pip libxrender1 libsm6 xserver-xorg-core xorg python3-venv vim pciutils wget git
 ENV APP_HOME /app
 WORKDIR $APP_HOME
