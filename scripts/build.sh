@@ -4,6 +4,11 @@ if [ ! -e /proc/driver/nvidia/version ]; then
     exit 1;
 fi;
 
+if  ! type "docker" 2> /dev/null > /dev/null ; then
+    echo "Error: docker not found. Please install docker to complete the build. "
+    exit 1
+fi;
+
 NVIDIA_VERSION=`cat /proc/driver/nvidia/version | grep 'NVRM version:'| grep -oE "Kernel Module\s+[0-9.]+"| awk {'print $3'}` 
 NVIDIA_MAJOR=`echo $NVIDIA_VERSION | tr "." "\n" | head -1  | tr -d "\n"`
 NVIDIA_MINOR=`echo $NVIDIA_VERSION | tr "." "\n" | head -2  | tail -1| tr -d "\n"`
@@ -26,7 +31,12 @@ else
     exit 1
 fi
 
-echo "Building Docker container with CUDA Version: $CUDA_VERSION, NVIDIA Driver: $NVIDIA_VERSION"
-NVIDIA_VERSION=$NVIDIA_VERSION docker build --build-arg CUDA_VERSION=$CUDA_VERSION -t robothor-challenge:latest .
 
+if (id -nG | grep -qw "docker") || [ "$USER" == "root" ]; then
+    echo "Building Docker container with CUDA Version: $CUDA_VERSION, NVIDIA Driver: $NVIDIA_VERSION"
+    NVIDIA_VERSION=$NVIDIA_VERSION docker build --build-arg CUDA_VERSION=$CUDA_VERSION -t robothor-challenge:latest .
+else
+    echo "Error: Unable to run build.sh. Please use sudo to run build.sh or add $USER to the docker group."
+    exit 1
+fi
 
