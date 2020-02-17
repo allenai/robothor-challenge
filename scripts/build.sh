@@ -7,20 +7,19 @@ fi;
 NVIDIA_VERSION=`cat /proc/driver/nvidia/version | grep 'NVRM version:'| grep -oE "Kernel Module\s+[0-9.]+"| awk {'print $3'}` 
 NVIDIA_MAJOR=`echo $NVIDIA_VERSION | tr "." "\n" | head -1  | tr -d "\n"`
 NVIDIA_MINOR=`echo $NVIDIA_VERSION | tr "." "\n" | head -2  | tail -1| tr -d "\n"`
-NVIDIA_MM="$NVIDIA_MAJOR.$NVIDIA_MINOR"
 
 # https://docs.nvidia.com/deploy/cuda-compatibility/index.html#binary-compatibility__table-toolkit-driver
-if (( $(echo "$NVIDIA_MM >= 440.33" | bc -l) )); then
+if (( $NVIDIA_MAJOR >= 440 && $NVIDIA_MINOR >= 33 )); then
     CUDA_VERSION=10.2
-elif (( $(echo "$NVIDIA_MM >= 418.39" | bc -l) )); then
+elif (( $NVIDIA_MAJOR >= 418 && $NVIDIA_MINOR >= 39 )); then
     CUDA_VERSION=10.1
-elif (( $(echo "$NVIDIA_MM >= 410.48" | bc -l) )); then
+elif (( $NVIDIA_MAJOR >= 410 && $NVIDIA_MINOR >= 48 )); then
     CUDA_VERSION=10.0
-elif (( $(echo "$NVIDIA_MM >= 396.26" | bc -l) )); then
+elif (( $NVIDIA_MAJOR >= 396 && $NVIDIA_MINOR >= 26 )); then
     CUDA_VERSION=9.2
-elif (( $(echo "$NVIDIA_MM >= 390.46" | bc -l) )); then
+elif (( $NVIDIA_MAJOR >= 390 && $NVIDIA_MINOR >= 46 )); then
     CUDA_VERSION=9.1
-elif (( $(echo "$NVIDIA_MM >= 384.81" | bc -l) )); then
+elif (( $NVIDIA_MAJOR >= 384 && $NVIDIA_MINOR >= 81 )); then
     CUDA_VERSION=9.0
 else
     echo "No valid CUDA version found for nvidia driver $NVIDIA_VERSION"
