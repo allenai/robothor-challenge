@@ -3,9 +3,10 @@ from abc import ABC, abstractmethod
 
 class Agent(ABC):
 
-    def __init__(self, episode):
-        self.episode = episode
+    @abstractmethod
+    def reset(self):
+        pass
 
     @abstractmethod
-    def on_event(self, event):
+    def act(self, event, target_object_type):
         pass

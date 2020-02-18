@@ -20,8 +20,8 @@ ALLOWED_ACTIONS =  ['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'LookU
 
 class RobothorChallenge:
 
-    def __init__(self, agent_cls):
-        self.agent_cls = agent_cls
+    def __init__(self, agent):
+        self.agent = agent
         self.load_config()
         if self.dataset_split == 'test':
             self.controller = ai2thor.controller.Controller(start_unity=False, port=8200, width=self.config['width'], height=self.config['height'], **self.config['initialize'])
@@ -55,7 +55,6 @@ class RobothorChallenge:
         for e in self.episodes:
             episode_result = dict(shortest_path= e['shortest_path'], success=False, path=[])
             episode_results.append(episode_result)
-            agent = self.agent_cls(e)
             logger.info("Task Start id:{id} scene:{scene} target_object:{object_id} initial_position:{initial_position} rotation:{initial_orientation}".format(**e))
             self.controller.initialization_parameters['robothorChallengeEpisodeId'] = e['id']
             self.controller.reset(e['scene'])
@@ -66,13 +65,15 @@ class RobothorChallenge:
             total_steps = 0
             episode_result['path'].append(self.controller.last_event.metadata['agent']['position'])
 
+            self.agent.reset()
+
             stopped = False
             while total_steps < self.config['max_steps'] and not stopped:
                 total_steps +=1 
                 event = self.controller.last_event
                 # must clear out metadata during inference 
                 event.metadata.clear()
-                action = agent.on_event(event)
+                action = self.agent.act(event, e['object_type'])
                 if action not in ALLOWED_ACTIONS:
                     raise ValueError("Invalid action: {action}".format(action=action))
 

@@ -7,11 +7,15 @@ logging.getLogger().setLevel(logging.INFO)
 
 class SimpleRandomAgent(Agent):
 
-    def on_event(self, event):
+    def reset(self):
+        pass
+
+    def act(self, event, target_object_type):
         action = random.choice(['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'LookUp', 'LookDown', 'Stop'])
         return action
 
 
 if __name__ == '__main__':
-    r = RobothorChallenge(agent_cls=SimpleRandomAgent)
+    agent = SimpleRandomAgent()
+    r = RobothorChallenge(agent=agent)
     r.inference()
