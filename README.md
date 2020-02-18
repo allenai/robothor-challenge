@@ -137,5 +137,5 @@ We will be using [EvalAI](https://evalai.cloudcv.org) to host the challenge.  Th
 
 ## Acknowledgments
 
-We would like to thank Rishabh Jain for the help for setting up the EvalAI leaderboard.
+We would like to thank [Rishabh Jain](https://rishabhjain.xyz/) for the help for setting up the EvalAI leaderboard.
 
