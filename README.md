@@ -53,16 +53,20 @@ logging.getLogger().setLevel(logging.INFO)
 
 class SimpleRandomAgent(Agent):
 
-    def on_event(self, event):
+    def reset(self):
+        pass
+
+    def act(self, event, target_object_type):
         action = random.choice(['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'LookUp', 'LookDown', 'Stop'])
         return action
 
 if __name__ == '__main__':
-    r = RobothorChallenge(agent_cls=SimpleRandomAgent)
+    agent = SimpleRandomAgent()
+    r = RobothorChallenge(agent=agent)
     r.inference()
 ```
 
-The agent will have access to the episode as a member variable ```agent.episode```.  The structure of each episode is as follows:
+Each episode has the following structure:
 ```javascript
  {
         "difficulty": "easy", // Task difficulty
