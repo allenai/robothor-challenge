@@ -1,2 +1,2 @@
-ai2thor==2.3.2
+ai2thor==2.3.4
 pyyaml
