@@ -92,9 +92,10 @@ class RobothorChallenge:
         return spl
 
     def setup_env(self):
-        xthread = threading.Thread(target=startx)
-        xthread.daemon = True
-        xthread.start()
-        import time
-        # XXX change this to use xdpyinfo
-        time.sleep(4)
+        if 'DISPLAY' not in os.environ:
+            xthread = threading.Thread(target=startx)
+            xthread.daemon = True
+            xthread.start()
+            import time
+            # XXX change this to use xdpyinfo
+            time.sleep(4)
