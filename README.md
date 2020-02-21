@@ -106,13 +106,14 @@ When you have a model to evaluate, modify the Dockerfile to copy any files and u
 
 ## Dataset
 
-The dataset consists of 25074 training episodes and 6290 val episodes where each episode consists of an agent starting position/rotation and target object.  
+The dataset consists of 27595 training episodes and 6116 val episodes where each episode consists of an agent starting position/rotation and target object.  
 
 The following target object types exist in the dataset:
 * Alarm Clock
 * Apple
 * Baseball Bat
 * Basketball
+* Bowl
 * Garbage Can
 * House Plant
 * Laptop
@@ -123,12 +124,12 @@ The following target object types exist in the dataset:
 
 | Split | Difficulty | Total |
 | ----- |:----------:|:-----:|
-|Train|easy| 8125 | 
-|Train|medium| 8125 | 
-|Train|hard| 8824| 
-|Val|easy| 2038 | 
-|Val|medium| 2038 | 
-|Val|hard| 2214| 
+|Train|easy| 8939 | 
+|Train|medium| 8939 | 
+|Train|hard| 9717| 
+|Val|easy| 1974 | 
+|Val|medium| 1974 | 
+|Val|hard| 2168 | 
 
 
 
