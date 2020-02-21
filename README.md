@@ -56,7 +56,8 @@ class SimpleRandomAgent(Agent):
     def reset(self):
         pass
 
-    def act(self, event, target_object_type):
+    def act(self, observations):
+        # observations contains the following keys: rgb(numpy RGB frame), depth (None by default), object_goal(category of target object)
         action = random.choice(['MoveAhead', 'MoveBack', 'RotateRight', 'RotateLeft', 'LookUp', 'LookDown', 'Stop'])
         return action
 

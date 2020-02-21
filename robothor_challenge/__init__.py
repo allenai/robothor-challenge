@@ -73,7 +73,7 @@ class RobothorChallenge:
                 event = self.controller.last_event
                 # must clear out metadata during inference 
                 event.metadata.clear()
-                action = self.agent.act(event, e['object_type'])
+                action = self.agent.act(dict(object_goal=e['object_type'], depth=None, rgb=event.frame))
                 if action not in ALLOWED_ACTIONS:
                     raise ValueError("Invalid action: {action}".format(action=action))
 
