@@ -8,5 +8,5 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def act(self, event, target_object_type):
+    def act(self, observations):
         pass
