@@ -34,7 +34,7 @@ fi
 
 if (id -nG | grep -qw "docker") || [ "$USER" == "root" ]; then
     echo "Building Docker container with CUDA Version: $CUDA_VERSION, NVIDIA Driver: $NVIDIA_VERSION"
-    NVIDIA_VERSION=$NVIDIA_VERSION docker build --build-arg CUDA_VERSION=$CUDA_VERSION -t robothor-challenge:latest .
+    docker build  --build-arg NVIDIA_VERSION=$NVIDIA_VERSION --build-arg CUDA_VERSION=$CUDA_VERSION  -t robothor-challenge:latest .
 else
     echo "Error: Unable to run build.sh. Please use sudo to run build.sh or add $USER to the docker group."
     exit 1
