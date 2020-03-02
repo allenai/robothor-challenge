@@ -7,6 +7,7 @@ import yaml
 import os
 import sys
 import logging
+import random
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler(sys.stdout)
@@ -22,12 +23,25 @@ class RobothorChallenge:
 
     def __init__(self, agent):
         self.agent = agent
+        self.dataset = {}
         self.load_config()
+        self.current_scene = None
+        self.reachable_positions_per_scene = {}
         if self.dataset_split == 'test':
-            self.controller = ai2thor.controller.Controller(start_unity=False, port=8200, width=self.config['width'], height=self.config['height'], **self.config['initialize'])
+            self.controller = ai2thor.controller.Controller(
+                start_unity=False,
+                port=8200,
+                width=self.config['width'],
+                height=self.config['height'],
+                **self.config['initialize']
+            )
         else:
             self.setup_env()
-            self.controller = ai2thor.controller.Controller(width=self.config['width'], height=self.config['height'], **self.config['initialize'])
+            self.controller = ai2thor.controller.Controller(
+                width=self.config['width'],
+                height=self.config['height'],
+                **self.config['initialize']
+            )
 
     @property
     def dataset_split(self):
@@ -48,7 +62,24 @@ class RobothorChallenge:
 
         with open(split_path) as f:
             self.episodes = json.loads(f.read())
-        
+
+            # Build a dictionary of the dataset indexed by scene, object_type
+            curr_scene = None
+            curr_object = None
+            points = []
+            scene_points = {}
+            for data_point in self.episodes:
+                if curr_object != data_point['object_type']:
+                    scene_points[curr_object] = points
+                    curr_object = data_point['object_type']
+                    points = []
+                if curr_scene != data_point['scene']:
+                    self.dataset[curr_scene] = scene_points
+                    curr_scene = data_point['scene']
+                    scene_points = {}
+
+                points.append(data_point)
+
 
     def inference(self):
         episode_results = []
@@ -99,3 +130,64 @@ class RobothorChallenge:
             import time
             # XXX change this to use xdpyinfo
             time.sleep(4)
+
+    def _change_scene(self, scene):
+        if self.current_scene != scene:
+            self.current_scene = scene
+            self.controller.reset(scene)
+            logger.info("Changed to scene: '{scene}'".format(scene=scene))
+
+    def move_to_point(self, datapoint):
+        self._change_scene(datapoint['scene'])
+        p = datapoint['initial_position']
+        logger.info("Moving to position: {p}, y-rotation: {rot}".format(p=p, rot=datapoint['initial_orientation']))
+        return self.controller.step(
+            action="TeleportFull",
+            x=p['x'],
+            y=p['y'],
+            z=p['z'],
+            rotation=dict(x=0, y=datapoint['initial_orientation'], z=0)
+        )
+
+    def move_to_random_dataset_point(self, scene, object_type):
+        if scene in self.dataset:
+            if object_type in self.dataset[scene]:
+                datapoint = random.choice(self.dataset[scene][object_type])
+                return self.move_to_point(datapoint)
+            else:
+                logger.warning(
+                    "No object of type: '{object_type}' for scene: '{scene}', in dataset".format(
+                        object_type=object_type,
+                        scene=scene
+                    )
+                )
+                return None
+        else:
+            logger.warning(
+                "No scene: '{scene}' in dataset".format(
+                    scene=scene
+                )
+            )
+            return None
+
+    def move_to_random_point(self, scene, y_rotation=0):
+        reachable_positions = self._get_reachable_positions_in_scene(scene)
+        p = random.choice(reachable_positions)
+        return self.move_to_point(dict(
+            initial_position=p,
+            initial_orientation=y_rotation,
+            scene=scene
+        ))
+
+    def _get_reachable_positions_in_scene(self, scene):
+        self._change_scene(scene)
+        if scene not in self.reachable_positions_per_scene:
+            event_reachable = self.controller.step(
+                dict(
+                    action='GetReachablePositions',
+                    gridSize=self.config['initialize']['gridSize']
+                )
+            )
+            self.reachable_positions_per_scene[scene] = event_reachable.metadata['actionReturn']
+        return self.reachable_positions_per_scene[scene]
+
