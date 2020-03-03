@@ -38,7 +38,6 @@ At this point you should see log messages that resemble the following:
 2020-02-11 05:08:00,989 [INFO] robothor_challenge - Agent action: Stop
 ```
 
-
 ## Model
 
 Your model must subclass ```robothor_challenge.agent.Agent``` and implement the method ```act```. For an episode to be successful, the agent must be within 1 meter of the target object and the object must also be visible to the agent.  To declare success, respond with the ```Stop``` action.  If ```Stop``` is not sent within the maxmimum number of steps (100 max), the episode will be considered failed and the next episode will be initialized.  The following agent (found in example_agent.py) takes a random action on each event:
@@ -135,6 +134,41 @@ The following target object types exist in the dataset:
 
 
 All the episodes for each split (train/val) can be found within the dataset/{train/val}.json files.  Configuration parameters for the environment can be found within dataset/challenge_config.yaml.  These are the same values that will be used for generating the leaderboard.  You are free to train your model with whatever parameters you choose, but these params will be reset to the original values for leaderboard evaluation.
+
+## Dataset Utility Functions
+
+Once you've created your agent class:
+
+```python
+agent = SimpleRandomAgent()
+r = RobothorChallenge(agent=agent)
+```
+
+You can move to points in the dataset by calling the following functions in the `RobothorChallenge` class:
+
+
+To move to a random point in the dataset for a particular `scene` and `object_type`:
+
+```python
+event = r.move_to_random_dataset_point("FloorPlan_Train2_1", "Apple")
+```
+
+Useful if you load the dataset yourself, to move to a specific dataset point:
+
+```python
+event = r.move_to_point(datasetpoint)
+```
+Where `datapoint` is an entry in the json dataset.
+
+To move to a random point in the scene, given by the [`GetReachabplePositions`](https://ai2thor.allenai.org/robothor/documentation/#get-reachable-positions) unity function:
+
+```python
+event = r.move_to_random_point("FloorPlan_Train1_1", y_rotation=180)
+```
+
+All of these return an `Event Object` with the frame and metadata (see: [documentation](https://ai2thor.allenai.org/robothor/documentation/#metadata)). This is the data you will likely use for training.
+
+To test the `RobothorChallenge` class make sure you set the environment variables `CHALLENGE_SPLIT` with `train` or `val`, and `CHALLENGE_CONFIG` to point to a challenge config yaml file. e.g. from the repo's root `./dataset/challenge_config.yaml`. This is set by the [evaluate_train](./scripts/evaluate_train.sh) script to run with docker.
 
 ## Challenge Submissions
 
