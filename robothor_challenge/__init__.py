@@ -24,13 +24,18 @@ class RobothorChallenge:
     def __init__(self, agent):
         self.agent = agent
         self.dataset = {}
+        self.dataset_dir = None
         self.load_config()
         self.current_scene = None
         self.reachable_positions_per_scene = {}
+        
         if self.dataset_split == 'test':
+            os.umask(0)
+            # allow the socket to be read by all
             self.controller = ai2thor.controller.Controller(
                 start_unity=False,
                 port=8200,
+                host='unix://' + os.path.join(self.dataset_dir, "server.sock"),
                 width=self.config['width'],
                 height=self.config['height'],
                 **self.config['initialize']
@@ -55,7 +60,8 @@ class RobothorChallenge:
 
 
         logger.info("Loading configuration from: {CHALLENGE_CONFIG}".format(**os.environ))
-        split_path = os.path.join(os.path.dirname(os.environ['CHALLENGE_CONFIG']),  self.dataset_split + ".json")
+        self.dataset_dir = os.path.dirname(os.environ['CHALLENGE_CONFIG'])
+        split_path = os.path.join(self.dataset_dir, self.dataset_split + ".json")
         logger.info("Loading split: {path}".format(path=split_path))
         with open(os.environ['CHALLENGE_CONFIG']) as f:
             self.config = yaml.safe_load(f.read())
