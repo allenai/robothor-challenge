@@ -12,7 +12,7 @@ if [[ -e /tmp/.X11-unix && ! -z ${DISPLAY+x} ]]; then
   xhost +local:root
 fi;
 
-docker run  -v $ROBOTHOR_BASE_DIR/dataset:/opt/robothor-challenge/dataset -e "CHALLENGE_SPLIT=train" -e "CHALLENGE_CONFIG=/opt/robothor-challenge/dataset/challenge_config.yaml" --privileged $X11_PARAMS -it robothor-challenge:latest python3 example_agent.py
+docker run  -v $ROBOTHOR_BASE_DIR/dataset:/opt/robothor-challenge/dataset -e "CHALLENGE_SPLIT=train" -e "CHALLENGE_CONFIG=/opt/robothor-challenge/dataset/challenge_config.yaml" --privileged $X11_PARAMS -it robothor-challenge:latest ./submission.sh
 
 if [[ -e /tmp/.X11-unix && ! -z ${DISPLAY+x} ]]; then
     xhost -local:root

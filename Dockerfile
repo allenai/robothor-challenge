@@ -13,6 +13,7 @@ RUN pip3 install -r requirements.txt && python3 -c "import ai2thor.controller; a
 RUN NVIDIA_VERSION=$NVIDIA_VERSION /app/install_nvidia.sh
 
 COPY robothor_challenge /app/robothor_challenge
+COPY submission.sh  ./
 COPY example_agent.py ./
 
-CMD /bin/bash
+CMD ["/bin/bash"]
