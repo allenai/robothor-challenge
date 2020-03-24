@@ -160,7 +160,7 @@ event = r.move_to_point(datasetpoint)
 ```
 Where `datapoint` is an entry in the json dataset.
 
-To move to a random point in the scene, given by the [`GetReachabplePositions`](https://ai2thor.allenai.org/robothor/documentation/#get-reachable-positions) unity function:
+To move to a random point in the scene, given by the [`GetReachablePositions`](https://ai2thor.allenai.org/robothor/documentation/#get-reachable-positions) unity function:
 
 ```python
 event = r.move_to_random_point("FloorPlan_Train1_1", y_rotation=180)
