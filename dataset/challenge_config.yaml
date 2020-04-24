@@ -6,6 +6,7 @@ initialize:
     continuousMode: True
     snapToGrid: False
     agentMode: bot
+    renderDepthImage: True
 
 
 width: 640
