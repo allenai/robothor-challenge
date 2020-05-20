@@ -1,2 +1,3 @@
 ai2thor==2.3.7
 pyyaml
+werkzeug>=0.15.0
