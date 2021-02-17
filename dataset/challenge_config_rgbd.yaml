@@ -6,9 +6,10 @@ initialize:
     continuousMode: True
     snapToGrid: False
     agentMode: bot
+    fieldOfView: 63.453048374758716 # Vertical FOV, corresponds to a horizontal FOV of 79
     renderDepthImage: True
 
-
+thor_build_id: bad5bc2b250615cb766ffb45d455c211329af17e
 width: 640
 height: 480
 max_steps: 500

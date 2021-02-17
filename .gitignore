@@ -1,2 +1,2 @@
-venv/
-robothor_challenge/__pycache__/
+__pycache__
+results/

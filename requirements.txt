@@ -1,3 +1,2 @@
-ai2thor==2.3.7
+ai2thor==2.7.2
 pyyaml
-werkzeug>=0.15.0
