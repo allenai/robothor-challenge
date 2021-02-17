@@ -254,7 +254,7 @@ All of these return an `Event Object` with the frame and metadata (see: [documen
 
 We have built support for this challenge into the [AllenAct framework](https://allenact.org/), this support includes
 1. Several CNN->RNN model baseline model architectures along with our best pretrained model checkpoint
-   (trained for 300M steps) obtaining a test-set succcess rate of ~26%.
+   (trained for 300M steps) obtaining a test-set success rate of ~26%.
 1. Reinforcement/imitation learning pipelines for training with
    [Distributed Decentralized Proximal Policy Optimization (DD-PPO)](https://arxiv.org/abs/1911.00357)
    and DAgger.
