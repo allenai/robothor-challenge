@@ -2,6 +2,7 @@ from robothor_challenge.challenge import RobothorChallenge
 import os
 import argparse
 import importlib
+import json
 import logging
 logging.getLogger().setLevel(logging.INFO)
 
@@ -20,9 +21,9 @@ def main():
         help="Filepath to challenge dataset.",
     )
     parser.add_argument(
-        "--output-dir", "-o",
-        default="results",
-        help="Directory to output results to.",
+        "--output", "-o",
+        default="metrics.json",
+        help="Filepath to output results to.",
     )
     parser.add_argument(
         "--debug",
@@ -35,6 +36,9 @@ def main():
         action="store_true")
     parser.add_argument(
         "--test",
+        action="store_true")
+    parser.add_argument(
+        "--submission",
         action="store_true")
     parser.add_argument(
         "--nprocesses", "-n",
@@ -50,44 +54,48 @@ def main():
 
     r = RobothorChallenge(agent_class, agent_kwargs, args.dataset_dir, render_depth=render_depth)
 
-    if os.path.exists(args.output_dir) is False:
-        os.makedirs(args.output_dir, exist_ok=True)
+    submission_metrics = {}
+
+    if args.submission:
+        args.debug = False
+        args.train = False
+        args.val = True
+        args.test = True
 
     if args.debug:
         debug_episodes, debug_dataset = r.load_split("debug")
-        r.inference(
+        submission_metrics["debug"] = r.inference(
             debug_episodes,
             nprocesses=args.nprocesses,
-            metrics_file=os.path.join(args.output_dir, "debug_metrics.json"),
             test=False
         )
 
     if args.train:
         train_episodes, train_dataset = r.load_split("train")
-        r.inference(
+        submission_metrics["train"] = r.inference(
             train_episodes,
             nprocesses=args.nprocesses,
-            metrics_file=os.path.join(args.output_dir, "train_metrics.json"),
             test=False
         )
 
     if args.val:
         val_episodes, val_dataset = r.load_split("val")
-        r.inference(
+        submission_metrics["val"] = r.inference(
             val_episodes,
             nprocesses=args.nprocesses,
-            metrics_file=os.path.join(args.output_dir, "val_metrics.json"),
             test=False
         )
 
     if args.test:
         test_episodes, test_dataset = r.load_split("test")
-        r.inference(
+        submission_metrics["test"] = r.inference(
             test_episodes,
             nprocesses=args.nprocesses,
-            metrics_file=os.path.join(args.output_dir, "test_metrics.json"),
             test=True
         )
+
+    with open(args.output, 'w') as write_file:
+        json.dump(submission_metrics, write_file)
 
 
 if __name__ == "__main__":
