@@ -258,10 +258,10 @@ All of these return an `Event Object` with the frame and metadata (see: [documen
 We have built support for this challenge into the [AllenAct framework](https://allenact.org/), this support includes
 1. Several CNN->RNN model baseline model architectures along with our best pretrained model checkpoint
    (trained for 300M steps) obtaining a test-set succcess rate of ~26%.
-2. Reinforcement/imitation learning pipelines for training with
+1. Reinforcement/imitation learning pipelines for training with
    [Distributed Decentralized Proximal Policy Optimization (DD-PPO)](https://arxiv.org/abs/1911.00357)
    and DAgger.
-3. Utility functions for visualization and caching (to improve training speed). 
+1. Utility functions for visualization and caching (to improve training speed). 
 
 For more information, or to see how to evaluate a trained AllenAct model, see [here](https://github.com/allenai/allenact/tree/master/projects/objectnav_baselines#robothor-objectnav-2021-challenge).
 
