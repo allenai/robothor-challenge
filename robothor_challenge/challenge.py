@@ -57,13 +57,12 @@ class RobothorChallenge:
         self.reachable_positions_per_scene = {}
 
     def load_config(self, render_depth):
-        challenge_config = os.path.join(
-            self.dataset_dir,
-            "challenge_config" + ("_rgbd" if render_depth else "") + ".yaml"
-        )
+        challenge_config = os.path.join(self.dataset_dir, "challenge_config.yaml")
         logger.info("Loading configuration from: %s" % challenge_config)
         with open(challenge_config, "r") as f:
             config = yaml.safe_load(f.read())
+        if render_depth:
+            config["initialize"]["renderDepthImage"] = True
         return config
 
     def setup_env(self):
@@ -184,6 +183,7 @@ class RobothorChallenge:
 
             if not test:
                 target_obj = get_object_by_type(event.metadata["objects"], e["object_type"])
+                assert target_obj is not None
                 target_visible = target_obj["visible"]
                 episode_metrics["success"] = stopped and target_visible
 

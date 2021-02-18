@@ -25,6 +25,11 @@ def main():
         default="metrics.json",
         help="Filepath to output results to.",
     )
+
+    parser.add_argument(
+        "--submission",
+        action="store_true")
+
     parser.add_argument(
         "--debug",
         action="store_true")
@@ -37,9 +42,7 @@ def main():
     parser.add_argument(
         "--test",
         action="store_true")
-    parser.add_argument(
-        "--submission",
-        action="store_true")
+
     parser.add_argument(
         "--nprocesses", "-n",
         default=1,
@@ -54,7 +57,7 @@ def main():
 
     r = RobothorChallenge(agent_class, agent_kwargs, args.dataset_dir, render_depth=render_depth)
 
-    submission_metrics = {}
+    challenge_metrics = {}
 
     if args.submission:
         args.debug = False
@@ -64,7 +67,7 @@ def main():
 
     if args.debug:
         debug_episodes, debug_dataset = r.load_split("debug")
-        submission_metrics["debug"] = r.inference(
+        challenge_metrics["debug"] = r.inference(
             debug_episodes,
             nprocesses=args.nprocesses,
             test=False
@@ -72,7 +75,7 @@ def main():
 
     if args.train:
         train_episodes, train_dataset = r.load_split("train")
-        submission_metrics["train"] = r.inference(
+        challenge_metrics["train"] = r.inference(
             train_episodes,
             nprocesses=args.nprocesses,
             test=False
@@ -80,7 +83,7 @@ def main():
 
     if args.val:
         val_episodes, val_dataset = r.load_split("val")
-        submission_metrics["val"] = r.inference(
+        challenge_metrics["val"] = r.inference(
             val_episodes,
             nprocesses=args.nprocesses,
             test=False
@@ -88,14 +91,14 @@ def main():
 
     if args.test:
         test_episodes, test_dataset = r.load_split("test")
-        submission_metrics["test"] = r.inference(
+        challenge_metrics["test"] = r.inference(
             test_episodes,
             nprocesses=args.nprocesses,
             test=True
         )
 
     with open(args.output, 'w') as write_file:
-        json.dump(submission_metrics, write_file)
+        json.dump(challenge_metrics, write_file)
 
 
 if __name__ == "__main__":

@@ -12,13 +12,15 @@ to get started.
 
 - [Installation](#installation)
 - [Submitting to the Leaderboard](#submitting-to-the-leaderboard)
-- [Evaluating your Model](#evaluating-your-model)
+- [Agent](#agent)
 - [Dataset](#dataset)
-- [Using AllenAct Baselines](#using-allenAct-baselines)
+- [Using AllenAct Baselines](#using-allenact-baselines)
 
 ## Installation
 
-To begin working on your own model you must have an GPU (required for 3D rendering).
+If you are planning to evaluate an agent trained in AllenAct, you may simply `pip install ai2thor==2.7.2`, skip the following instructions, and follow [our example for evaluating AllenAct baselines](#using-allenact-baselines) below instead.
+
+Otherwise, to begin working on your own model you must have an GPU (required for 3D rendering).
 
 <details>
 <summary><b>Local Installation</b></summary>
@@ -38,11 +40,10 @@ python3 robothor_challenge/scripts/download_thor_buid.py
 
 Run evaluation on random agent
 ```bash
-python3 runner.py --a agents.random_agent --d ./dataset --o ./random_metrics.json --debug --nprocesses 1
+python3 runner.py -a agents.random_agent -d ./dataset -o ./random_metrics.json --debug --nprocesses 1
 ```
 
-This command runs inference with the random agent over the debug split.
-You can pass one or more of the args (`--train`, `--val`, `--test`) instead to run this agent on other splits.
+This command runs inference with the random agent over the debug split. You can pass the args (`--train`, `--val`, and/or `--test`) or `--submission` instead to run this agent on other splits.
 
 </p>
 </details>
@@ -56,26 +57,23 @@ If you prefer to use docker, you may follow these instructions instead:
 Build the `ai2thor-docker` image
 ```bash
 git clone https://github.com/allenai/ai2thor-docker
-cd ai2thor-docker
-./scripts/build.sh
-cd ..
+cd ai2thor-docker && ./scripts/build.sh && cd ..
 ```
 
-Clone or fork this repository and build a docker image for this challenge
+Then, build the `robothor-challenge` image
 ```bash
 git clone https://github.com/allenai/robothor-challenge
-cd robothor-challenge
-docker build -t robothor-challenge .
+cd robothor-challenge && docker build -t robothor-challenge .
 ```
 
-Run evaluation on random agent
+Run evaluation with random agent
 ```bash
-EVAL_CMD="python3 runner.py --a agents.random_agent --d ./dataset --o ./random_metrics.json --debug --nprocesses 1"
+EVAL_CMD="python3 runner.py -a agents.random_agent -d ./dataset -o ./random_metrics.json --debug --nprocesses 1"
 
 docker run --privileged --env="DISPLAY" -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $(pwd):/app/robothor-challenge -it robothor-challenge:latest bash -c $EVAL_CMD
 ```
 
-`$EVAL_CMD` runs inference with the random agent over the debug split. You can pass one or more of the args (`--train`, `--val`, `--test`) instead to run this agent on other splits.
+This command runs inference with the random agent over the debug split. You can pass the args (`--train`, `--val`, and/or `--test`) or `--submission` instead to run this agent on other splits.
 
 You can update the Dockerfile and example script as needed to setup your agent.
 
@@ -91,29 +89,33 @@ After installing and running the demo, you should see log messages that resemble
 2020-02-11 05:08:00,989 [INFO] robothor_challenge - Agent action: Stop
 ```
 
-Additionally, you will find metrics files for a submission to this challenge in the `./random_results` directory.
-
 ## Submitting to the Leaderboard
 
 We will be using an [AI2 Leaderboard](https://leaderboard.allenai.org/) to host the challenge. You will be submitting
-your metrics (`val_metrics.json` and `test_metrics.json`) for evaluation. During leaderboard
-evaluation, we will validate your results and compute several metrics (success rate, SPL, proximity-only success rate, and
-proximity-only SPL).
+your metrics file (e.g. `submission_metrics.json` as below) for evaluation. During leaderboard evaluation, we will validate your results and compute several metrics (success rate, SPL, proximity-only success rate, proximity-only SPL, and episode length).
 
-Submissions will open in the following week after which this page will be updated to include the submission link. 
+To generate a submission, use the following evaluation command:
+```bash
+python3 runner.py -a agents.your_agent_module -d ./dataset -o ./submission_metrics.json --submission --nprocesses 8
+```
+
+If you are evaluating an agent trained in AllenAct, please follow our example in [Using AllenAct Baselines](#using-allenact-baselines) instead.
+
+Submissions will open in the following week, after which this page will be updated to include the submission link. 
 <!--
 You can make your submission at the following URL: https://leaderboard.allenai.org/objectnav/submissions/public
 -->
 
-## Evaluating your Model
+## Agent
 
-In order to generate the `*_metrics.json` files for your agent, your agent must subclass 
-`robothor_challenge.agent.Agent` and implement the `act` method. For an episode to be successful,
+In order to generate the `metrics.json` file for your agent, your agent must subclass 
+`robothor_challenge.agent.Agent` and implement the `act` method.
+Please place this agent in the `agents/` directory. For an episode to be successful,
 the agent must be within 1 meter of the target object and the object must also be visible to the agent. 
 To declare success, respond with the `Stop` action. If `Stop` is not sent within the maxmimum number of steps
 (500 max), the episode will be considered failed and the next episode will be initialized. The agent in
 `agents/random_agent.py` takes a random action at each step. You must also implement a `build()` function to specify how
-the agent class should be initialized.
+the agent class should be initialized. Be sure any dependencies required by your agent are included in `$PYTHONPATH`.
 
 <details>
 <summary><b>agents/random_agent.py</b></summary>
@@ -145,6 +147,7 @@ def build():
     render_depth = False
     return agent_class, agent_kwargs, render_depth
 ```
+
 </p>
 </details>
 
@@ -154,7 +157,7 @@ The dataset is divided into the following splits:
 
 | Split | # Episodes | Files |
 | ----- |:-----:|-----|
-| Debug | 4 | `dataset/debug/episodes/FloorPlan_Train*.json.gz` |
+| Debug | 4 | `dataset/debug/episodes/FloorPlan_Train1_1.json.gz` |
 | Train | 108000 | `dataset/train/episodes/FloorPlan_Train*.json.gz`|
 | Val   | 1800 | `dataset/val/episodes/FloorPlan_Val*.json.gz` | 
 | Test  | 2040 | `dataset/test/episodes/FloorPlan_test-challenge*.json.gz` |
@@ -216,7 +219,7 @@ The following (12) target object types exist in the dataset:
 
 All the episodes for each split (train/val/test) can be found within `dataset/`. There is also a "debug" split available. Configuration parameters for the environment can be found within `dataset/challenge_config.yaml`. These are the same values that will be used for generating the leaderboard. You are free to train your model with whatever parameters you choose, but these params will be reset to the original values for leaderboard evaluation.
 
-### Dataset Utility Functions
+### Utility Functions
 
 Once you've created your agent class and loaded your dataset:
 
@@ -255,12 +258,12 @@ All of these return an `Event Object` with the frame and metadata (see: [documen
 We have built support for this challenge into the [AllenAct framework](https://allenact.org/), this support includes
 1. Several CNN->RNN model baseline model architectures along with our best pretrained model checkpoint
    (trained for 300M steps) obtaining a test-set succcess rate of ~26%.
-1. Reinforcement/imitation learning pipelines for training with
+2. Reinforcement/imitation learning pipelines for training with
    [Distributed Decentralized Proximal Policy Optimization (DD-PPO)](https://arxiv.org/abs/1911.00357)
    and DAgger.
-1. Utility functions for visualization and caching (to improve training speed). 
+3. Utility functions for visualization and caching (to improve training speed). 
 
-For more information see [here](https://github.com/allenai/allenact/tree/master/projects/objectnav_baselines#robothor-objectnav-2021-challenge).
+For more information, or to see how to evaluate a trained AllenAct model, see [here](https://github.com/allenai/allenact/tree/master/projects/objectnav_baselines#robothor-objectnav-2021-challenge).
 
 ### Converting AllenAct metrics to evaluation trajectories
 
@@ -271,8 +274,8 @@ different format than expected when submitting to our leaderboard. Because of th
 submission format.
 
 ```bash
-$ALLENACT_METRICS = metrics__val_2021-02-14_13-39-36.json
-python3 -m robothor_challenge.scripts.convert_allenact_metrics -i $ALLENACT_METRICS -o val_metrics.json
-```
+export ALLENACT_VAL_METRICS = /path/to/metrics__val_*.json
+export ALLENACT_TEST_METRICS = /path/to/metrics__test_*.json
 
-If converting test set metrics, please also use the `--test` flag.
+python3 -m robothor_challenge.scripts.convert_allenact_metrics -v $ALLENACT_VAL_METRICS -t $ALLENACT_TEST_METRICS -o submission_metrics.json
+```
