@@ -38,7 +38,7 @@ python3 robothor_challenge/scripts/download_thor_buid.py
 
 Run evaluation on random agent
 ```bash
-python3 runner.py --a agents.random_agent --d ./dataset --o ./random_results --debug --nprocesses 1
+python3 runner.py --a agents.random_agent --d ./dataset --o ./random_metrics.json --debug --nprocesses 1
 ```
 
 This command runs inference with the random agent over the debug split.
@@ -70,7 +70,7 @@ docker build -t robothor-challenge .
 
 Run evaluation on random agent
 ```bash
-EVAL_CMD="python3 runner.py --a agents.random_agent --d ./dataset --o ./random_results --debug --nprocesses 1"
+EVAL_CMD="python3 runner.py --a agents.random_agent --d ./dataset --o ./random_metrics.json --debug --nprocesses 1"
 
 docker run --privileged --env="DISPLAY" -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $(pwd):/app/robothor-challenge -it robothor-challenge:latest bash -c $EVAL_CMD
 ```

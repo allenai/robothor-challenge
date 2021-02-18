@@ -47,6 +47,7 @@ class RobothorChallenge:
 
         self.setup_env()
         self.controller_kwargs = {
+            "commit_id": self.config["thor_build_id"],
             "width": self.config["width"],
             "height": self.config["height"],
             **self.config["initialize"]
@@ -130,6 +131,7 @@ class RobothorChallenge:
 
             logger.info("Task Start id:{id} scene:{scene} target_object:{object_type} initial_position:{initial_position} rotation:{initial_orientation}".format(**e))
             controller.initialization_parameters["robothorChallengeEpisodeId"] = e["id"]
+            print(e["scene"])
             controller.reset(e["scene"])
             teleport_action = {
                 "action": "TeleportFull",
@@ -199,7 +201,7 @@ class RobothorChallenge:
         controller.stop()
         print(f"Worker {worker_ind} Finished.")
 
-    def inference(self, episodes, nprocesses=1, metrics_file=None, test=False):
+    def inference(self, episodes, nprocesses=1, test=False):
         send_queue = mp.Queue()
         receive_queue = mp.Queue()
 
@@ -260,9 +262,7 @@ class RobothorChallenge:
         else:
             logger.info("Total Episodes: {episode_count} Episode Length:{ep_len}".format(episode_count=len(episodes), ep_len=metrics["ep_len"]))
 
-        if metrics_file is not None:
-            with open(metrics_file, "w") as write_fp:
-                json.dump(metrics, write_fp)
+        return metrics
 
 
     def _change_scene(self, scene):

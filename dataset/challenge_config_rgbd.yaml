@@ -5,7 +5,7 @@ initialize:
     agentType: stochastic
     continuousMode: True
     snapToGrid: False
-    agentMode: bot
+    agentMode: locobot
     fieldOfView: 63.453048374758716 # Vertical FOV, corresponds to a horizontal FOV of 79
     renderDepthImage: True
 
