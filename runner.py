@@ -15,6 +15,12 @@ def main():
         default="agents.random_agent",
         help="Relative module for agent definition.",
     )
+
+    parser.add_argument(
+        "--cfg", "-c",
+        default="challenge_config.yaml",
+        help="Filepath to challenge config.",
+    )
     parser.add_argument(
         "--dataset-dir", "-d",
         default="dataset",
@@ -29,7 +35,6 @@ def main():
     parser.add_argument(
         "--submission",
         action="store_true")
-
     parser.add_argument(
         "--debug",
         action="store_true")
@@ -51,22 +56,21 @@ def main():
     )
 
     args = parser.parse_args()
-
-    agent = importlib.import_module(args.agent)
-    agent_class, agent_kwargs, render_depth = agent.build()
-
-    r = RobothorChallenge(agent_class, agent_kwargs, args.dataset_dir, render_depth=render_depth)
-
-    challenge_metrics = {}
-
     if args.submission:
         args.debug = False
         args.train = False
         args.val = True
         args.test = True
 
+    agent = importlib.import_module(args.agent)
+    agent_class, agent_kwargs, render_depth = agent.build()
+
+    r = RobothorChallenge(agent_class, agent_kwargs, args.cfg, render_depth=render_depth)
+
+    challenge_metrics = {}
+
     if args.debug:
-        debug_episodes, debug_dataset = r.load_split("debug")
+        debug_episodes, debug_dataset = r.load_split(args.dataset_dir, "debug")
         challenge_metrics["debug"] = r.inference(
             debug_episodes,
             nprocesses=args.nprocesses,
@@ -74,7 +78,7 @@ def main():
         )
 
     if args.train:
-        train_episodes, train_dataset = r.load_split("train")
+        train_episodes, train_dataset = r.load_split(args.dataset_dir, "train")
         challenge_metrics["train"] = r.inference(
             train_episodes,
             nprocesses=args.nprocesses,
@@ -82,7 +86,7 @@ def main():
         )
 
     if args.val:
-        val_episodes, val_dataset = r.load_split("val")
+        val_episodes, val_dataset = r.load_split(args.dataset_dir, "val")
         challenge_metrics["val"] = r.inference(
             val_episodes,
             nprocesses=args.nprocesses,
@@ -90,7 +94,7 @@ def main():
         )
 
     if args.test:
-        test_episodes, test_dataset = r.load_split("test")
+        test_episodes, test_dataset = r.load_split(args.dataset_dir, "test")
         challenge_metrics["test"] = r.inference(
             test_episodes,
             nprocesses=args.nprocesses,

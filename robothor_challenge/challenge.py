@@ -38,12 +38,11 @@ def get_object_by_type(event_objects, object_type):
 
 class RobothorChallenge:
 
-    def __init__(self, agent_class, agent_kwargs, dataset_dir, render_depth=False):
+    def __init__(self, agent_class, agent_kwargs, cfg_file, render_depth=False):
         self.agent_class = agent_class
         self.agent_kwargs = agent_kwargs
 
-        self.dataset_dir = dataset_dir
-        self.config = self.load_config(render_depth)
+        self.config = self.load_config(cfg_file, render_depth)
 
         self.setup_env()
         self.controller_kwargs = {
@@ -56,10 +55,9 @@ class RobothorChallenge:
         self.current_scene = None
         self.reachable_positions_per_scene = {}
 
-    def load_config(self, render_depth):
-        challenge_config = os.path.join(self.dataset_dir, "challenge_config.yaml")
-        logger.info("Loading configuration from: %s" % challenge_config)
-        with open(challenge_config, "r") as f:
+    def load_config(self, cfg_file, render_depth):
+        logger.info("Loading configuration from: %s" % cfg_file)
+        with open(cfg_file, "r") as f:
             config = yaml.safe_load(f.read())
         if render_depth:
             config["initialize"]["renderDepthImage"] = True
@@ -74,8 +72,8 @@ class RobothorChallenge:
             # XXX change this to use xdpyinfo
             time.sleep(4)
 
-    def load_split(self, split):
-        split_paths = os.path.join(self.dataset_dir, split, "episodes", "*.json.gz")
+    def load_split(self, dataset_dir, split):
+        split_paths = os.path.join(dataset_dir, split, "episodes", "*.json.gz")
         split_paths = sorted(glob.glob(split_paths))
 
         episode_list = []
