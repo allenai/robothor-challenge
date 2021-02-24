@@ -65,7 +65,7 @@ def main():
     agent = importlib.import_module(args.agent)
     agent_class, agent_kwargs, render_depth = agent.build()
 
-    r = RobothorChallenge(agent_class, agent_kwargs, args.cfg, render_depth=render_depth)
+    r = RobothorChallenge(args.cfg, agent_class, agent_kwargs, render_depth=render_depth)
 
     challenge_metrics = {}
 

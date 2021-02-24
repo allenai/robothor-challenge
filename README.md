@@ -99,6 +99,8 @@ To generate a submission, use the following evaluation command:
 python3 runner.py -a agents.your_agent_module -c ./challenge_config.yaml -d ./dataset -o ./submission_metrics.json --submission --nprocesses 8
 ```
 
+We have provided an [example submission file](https://prior-leaderboards-public.s3-us-west-2.amazonaws.com/robothor-objectnav/demo-trajectories-2021/example_submission.json) for you to view. The episodes in this example has been evaluated using our baselines (50% by a random agent and 50% by a pretrained agent).
+
 If you are evaluating an agent trained in AllenAct, please follow our example in [Using AllenAct Baselines](#using-allenact-baselines) instead.
 
 Submissions will open in the following week, after which this page will be updated to include the submission link. 
@@ -224,9 +226,10 @@ All the episodes for each split (train/val/test) can be found within `dataset/`.
 Once you've created your agent class and loaded your dataset:
 
 ```python
+cfg = 'challenge_config.yaml'
 agent_class, agent_kwargs, render_depth = agent_module.build()
-r = RobothorChallenge(agent_class, agent_kwargs, dataset_dir='dataset', render_depth=render_depth)
-train_episodes, train_dataset = r.load_split('train')
+r = RobothorChallenge(cfg, agent_class, agent_kwargs, render_depth=render_depth)
+train_episodes, train_dataset = r.load_split('dataset', 'train')
 ```
 
 You can move to points in the dataset by calling the following functions in the `RobothorChallenge` class:

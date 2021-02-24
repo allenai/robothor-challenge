@@ -38,7 +38,7 @@ def get_object_by_type(event_objects, object_type):
 
 class RobothorChallenge:
 
-    def __init__(self, agent_class, agent_kwargs, cfg_file, render_depth=False):
+    def __init__(self, cfg_file, agent_class, agent_kwargs, render_depth=False):
         self.agent_class = agent_class
         self.agent_kwargs = agent_kwargs
 
@@ -55,7 +55,8 @@ class RobothorChallenge:
         self.current_scene = None
         self.reachable_positions_per_scene = {}
 
-    def load_config(self, cfg_file, render_depth):
+    @staticmethod
+    def load_config(cfg_file, render_depth):
         logger.info("Loading configuration from: %s" % cfg_file)
         with open(cfg_file, "r") as f:
             config = yaml.safe_load(f.read())
@@ -63,7 +64,8 @@ class RobothorChallenge:
             config["initialize"]["renderDepthImage"] = True
         return config
 
-    def setup_env(self):
+    @staticmethod
+    def setup_env():
         if "DISPLAY" not in os.environ:
             xthread = threading.Thread(target=startx)
             xthread.daemon = True
@@ -72,7 +74,8 @@ class RobothorChallenge:
             # XXX change this to use xdpyinfo
             time.sleep(4)
 
-    def load_split(self, dataset_dir, split):
+    @staticmethod
+    def load_split(dataset_dir, split):
         split_paths = os.path.join(dataset_dir, split, "episodes", "*.json.gz")
         split_paths = sorted(glob.glob(split_paths))
 
@@ -106,8 +109,8 @@ class RobothorChallenge:
 
         return episode_list, dataset
 
+    @staticmethod
     def inference_worker(
-        self,
         worker_ind: int,
         in_queue: mp.Queue,
         out_queue: mp.Queue,
