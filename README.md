@@ -40,7 +40,7 @@ python3 robothor_challenge/scripts/download_thor_buid.py
 
 Run evaluation on random agent
 ```bash
-python3 runner.py -a agents.random_agent -c ./challenge_config.yaml -d ./dataset -o ./random_metrics.json --debug --nprocesses 1
+python3 runner.py -a agents.random_agent -c ./challenge_config.yaml -d ./dataset -o ./random_metrics.json.gz --debug --nprocesses 1
 ```
 
 This command runs inference with the random agent over the debug split. You can pass the args (`--train`, `--val`, and/or `--test`) or `--submission` instead to run this agent on other splits.
@@ -68,7 +68,7 @@ cd robothor-challenge && docker build -t robothor-challenge .
 
 Run evaluation with random agent
 ```bash
-EVAL_CMD="python3 runner.py -a agents.random_agent -c ./challenge_config.yaml -d ./dataset -o ./random_metrics.json --debug --nprocesses 1"
+EVAL_CMD="python3 runner.py -a agents.random_agent -c ./challenge_config.yaml -d ./dataset -o ./random_metrics.json.gz --debug --nprocesses 1"
 
 docker run --privileged --env="DISPLAY" -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $(pwd):/app/robothor-challenge -it robothor-challenge:latest bash -c $EVAL_CMD
 ```
@@ -92,14 +92,14 @@ After installing and running the demo, you should see log messages that resemble
 ## Submitting to the Leaderboard
 
 We will be using an [AI2 Leaderboard](https://leaderboard.allenai.org/) to host the challenge. You will be submitting
-your metrics file (e.g. `submission_metrics.json` as below) for evaluation. During leaderboard evaluation, we will validate your results and compute several metrics (success rate, SPL, proximity-only success rate, proximity-only SPL, and episode length).
+your metrics file (e.g. `submission_metrics.json.gz` as below) for evaluation. During leaderboard evaluation, we will validate your results and compute several metrics (success rate, SPL, proximity-only success rate, proximity-only SPL, and episode length).
 
 To generate a submission, use the following evaluation command:
 ```bash
-python3 runner.py -a agents.your_agent_module -c ./challenge_config.yaml -d ./dataset -o ./submission_metrics.json --submission --nprocesses 8
+python3 runner.py -a agents.your_agent_module -c ./challenge_config.yaml -d ./dataset -o ./submission_metrics.json.gz --submission --nprocesses 8
 ```
 
-We have provided an [example submission file](https://prior-leaderboards-public.s3-us-west-2.amazonaws.com/robothor-objectnav/demo-trajectories-2021/example_submission.json) for you to view. The episodes in this example has been evaluated using our baselines (50% by a random agent and 50% by a pretrained agent).
+We have provided an [example submission file](https://prior-leaderboards-public.s3-us-west-2.amazonaws.com/robothor-objectnav/demo-trajectories-2021/example_submission.json.gz) for you to view. The episodes in this example has been evaluated using our baselines (50% by a random agent and 50% by a pretrained agent).
 
 If you are evaluating an agent trained in AllenAct, please follow our example in [Using AllenAct Baselines](#using-allenact-baselines) instead.
 
@@ -110,7 +110,7 @@ You can make your submission at the following URL: https://leaderboard.allenai.o
 
 ## Agent
 
-In order to generate the `metrics.json` file for your agent, your agent must subclass 
+In order to generate the `metrics.json.gz` file for your agent, your agent must subclass 
 `robothor_challenge.agent.Agent` and implement the `act` method.
 Please place this agent in the `agents/` directory. For an episode to be successful,
 the agent must be within 1 meter of the target object and the object must also be visible to the agent. 
@@ -280,5 +280,5 @@ submission format.
 export ALLENACT_VAL_METRICS = /path/to/metrics__val_*.json
 export ALLENACT_TEST_METRICS = /path/to/metrics__test_*.json
 
-python3 -m robothor_challenge.scripts.convert_allenact_metrics -v $ALLENACT_VAL_METRICS -t $ALLENACT_TEST_METRICS -o submission_metrics.json
+python3 -m robothor_challenge.scripts.convert_allenact_metrics -v $ALLENACT_VAL_METRICS -t $ALLENACT_TEST_METRICS -o submission_metrics.json.gz
 ```

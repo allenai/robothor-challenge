@@ -2,6 +2,7 @@ from robothor_challenge.challenge import RobothorChallenge
 import os
 import argparse
 import importlib
+import gzip
 import json
 import logging
 logging.getLogger().setLevel(logging.INFO)
@@ -28,7 +29,7 @@ def main():
     )
     parser.add_argument(
         "--output", "-o",
-        default="metrics.json",
+        default="metrics.json.gz",
         help="Filepath to output results to.",
     )
 
@@ -101,8 +102,8 @@ def main():
             test=True
         )
 
-    with open(args.output, 'w') as write_file:
-        json.dump(challenge_metrics, write_file)
+    with gzip.open(args.output, "wt", encoding="utf-8") as zipfile:
+        json.dump(challenge_metrics, zipfile)
 
 
 if __name__ == "__main__":

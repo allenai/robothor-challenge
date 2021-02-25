@@ -1,5 +1,6 @@
 from robothor_challenge.challenge import ALLOWED_ACTIONS
 import argparse
+import gzip
 import json
 import ai2thor.util.metrics
 
@@ -29,7 +30,7 @@ def main():
     parser.add_argument(
         "--output", "-o",
         help="Output challenge metrics to this file.",
-        default="submission_metrics.json")
+        default="submission_metrics.json.gz")
 
     args = parser.parse_args()
 
@@ -96,8 +97,8 @@ def main():
 
         challenge_metrics[split]["ep_len"] = sum([len(e["trajectory"]) for e in challenge_metrics[split]["episodes"].values()]) / num_episodes
 
-    with open(args.output, "w") as output:
-        json.dump(challenge_metrics, output)
+    with gzip.open(args.output, "wt", encoding="utf-8") as zipfile:
+        json.dump(challenge_metrics, zipfile)
 
 
 if __name__ == "__main__":
