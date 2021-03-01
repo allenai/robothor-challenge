@@ -35,7 +35,7 @@ cd robothor-challenge
 Install `ai2thor` (we assume you are using Python version 3.6 or later):
 ```bash
 pip3 install -r requirements.txt
-python3 robothor_challenge/scripts/download_thor_buid.py
+python3 robothor_challenge/scripts/download_thor_build.py
 ```
 
 Run evaluation on random agent
