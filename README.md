@@ -2,7 +2,7 @@
 
 # 2021 RoboTHOR Object Navigation Challenge
 
-Welcome to the 2021 RoboTHOR Object Navigation (ObjectNav) Challenge hosted at the
+Welcome to the [2021 RoboTHOR Object Navigation (ObjectNav) Challenge](https://ai2thor.allenai.org/robothor/cvpr-2021-challenge/) hosted at the
 [CVPR'21 Embodied-AI Workshop](https://embodied-ai.org/).
 The goal of this challenge is to build a model/agent that can navigate towards a given object in
 a room using the [RoboTHOR](https://ai2thor.allenai.org/robothor/) embodied-AI environment. Please follow the instructions below
@@ -99,14 +99,11 @@ To generate a submission, use the following evaluation command:
 python3 runner.py -a agents.your_agent_module -c ./challenge_config.yaml -d ./dataset -o ./submission_metrics.json.gz --submission --nprocesses 8
 ```
 
-We have provided an [example submission file](https://prior-leaderboards-public.s3-us-west-2.amazonaws.com/robothor-objectnav/demo-trajectories-2021/example_submission.json.gz) for you to view. The episodes in this example has been evaluated using our baselines (50% by a random agent and 50% by a pretrained agent).
+We have provided an [example submission file](https://prior-leaderboards-public.s3-us-west-2.amazonaws.com/robothor-objectnav/demo-trajectories-2021/example_submission.json.gz) for you to view. The episodes in this example has been evaluated using our baselines (50% by a random agent and 50% by our baseline AllenAct agent).
 
 If you are evaluating an agent trained in AllenAct, please follow our example in [Using AllenAct Baselines](#using-allenact-baselines) instead.
 
-Submissions will open in the following week, after which this page will be updated to include the submission link. 
-<!--
-You can make your submission at the following URL: https://leaderboard.allenai.org/objectnav/submissions/public
--->
+You can make your submission at the following URL: https://leaderboard.allenai.org/robothor_objectnav/submissions/public
 
 ## Agent
 
