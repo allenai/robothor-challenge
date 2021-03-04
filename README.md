@@ -92,7 +92,7 @@ After installing and running the demo, you should see log messages that resemble
 ## Submitting to the Leaderboard
 
 We will be using an [AI2 Leaderboard](https://leaderboard.allenai.org/) to host the challenge. You will be submitting
-your metrics file (e.g. `submission_metrics.json.gz` as below) for evaluation. During leaderboard evaluation, we will validate your results and compute several metrics (success rate, SPL, proximity-only success rate, proximity-only SPL, and episode length).
+your metrics file (e.g. `submission_metrics.json.gz` as below) for evaluation. During leaderboard evaluation, we will validate your results and compute several metrics (success rate, SPL, proximity-only success rate, proximity-only SPL, and episode length). Submissions will be ranked on the leaderboard by SPL on the test set.
 
 To generate a submission, use the following evaluation command:
 ```bash
