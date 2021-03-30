@@ -55,7 +55,7 @@ EndSection
     for i, bus_id in enumerate(devices):
         xorg_conf.append(device_section.format(device_id=i, bus_id=bus_id))
         xorg_conf.append(screen_section.format(device_id=i, screen_id=i))
-        screen_records.append("Screen {screen_id} 'Screen{screen_id}' 0 0".format(screen_id=i))
+        screen_records.append('Screen {screen_id} "Screen{screen_id}" 0 0'.format(screen_id=i))
     
     xorg_conf.append(server_layout_section.format(screen_records="\n    ".join(screen_records)))
 
@@ -87,6 +87,4 @@ def startx(display=0):
     finally: 
         os.close(fd)
         os.unlink(path)
-
-    
 
