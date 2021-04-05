@@ -8,6 +8,10 @@ import threading
 import os
 import sys
 
+# Turning off automatic black formatting for this script as it breaks quotes.
+
+# fmt: off
+
 def pci_records():
     records = []
     command = shlex.split("lspci -vmm")
@@ -88,3 +92,4 @@ def startx(display=0):
         os.close(fd)
         os.unlink(path)
 
+# fmt: on
