@@ -91,8 +91,7 @@ After installing and running the demo, you should see log messages that resemble
 
 ## Submitting to the Leaderboard
 
-We will be using an [AI2 Leaderboard](https://leaderboard.allenai.org/) to host the challenge. You will be submitting
-your metrics file (e.g. `submission_metrics.json.gz` as below) for evaluation. During leaderboard evaluation, we will validate your results and compute several metrics (success rate, SPL, proximity-only success rate, proximity-only SPL, and episode length). Submissions will be ranked on the leaderboard by SPL on the test set.
+We will be using an [AI2 Leaderboard](https://leaderboard.allenai.org/) to host the challenge. The team with the best submission made by May 31st (midnight, [anywhere on earth](https://time.is/Anywhere_on_Earth)) will be announced at the [CVPR'21 Embodied-AI Workshop](https://embodied-ai.org/) and invited to produce a video describing their approach. You will be submitting your metrics file (e.g. `submission_metrics.json.gz` as below) for evaluation. During leaderboard evaluation, we will validate your results and compute several metrics (success rate, SPL, proximity-only success rate, proximity-only SPL, and episode length). Submissions will be ranked on the leaderboard by SPL on the test set.
 
 To generate a submission, use the following evaluation command:
 ```bash
@@ -104,8 +103,6 @@ We have provided an [example submission file](https://prior-leaderboards-public.
 If you are evaluating an agent trained in AllenAct, please follow our example in [Using AllenAct Baselines](#using-allenact-baselines) instead.
 
 You can make your submission at the following URL: https://leaderboard.allenai.org/robothor_objectnav/submissions/public
-
-The team with the best submission made by May 31st (midnight, [anywhere on earth](https://time.is/Anywhere_on_Earthv)) will be announced at the [CVPR'21 Embodied-AI Workshop](https://embodied-ai.org/) and invited to produce a video describing their approach.
 
 ## Agent
 
