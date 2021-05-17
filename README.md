@@ -105,6 +105,8 @@ If you are evaluating an agent trained in AllenAct, please follow our example in
 
 You can make your submission at the following URL: https://leaderboard.allenai.org/robothor_objectnav/submissions/public
 
+The team with the best submission made by May 31st (midnight, [anywhere on earth](https://time.is/Anywhere_on_Earthv)) will be announced at the [CVPR'21 Embodied-AI Workshop](https://embodied-ai.org/) and invited to produce a video describing their approach.
+
 ## Agent
 
 In order to generate the `metrics.json.gz` file for your agent, your agent must subclass 
