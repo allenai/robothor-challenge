@@ -34,9 +34,9 @@ def main():
 
     args = parser.parse_args()
 
-    with open(args.val_metrics, "r") as read_file:
+    with open(args.val_metrics, "r", encoding="utf-8") as read_file:
         allenact_val_metrics = json.load(read_file)
-    with open(args.test_metrics, "r") as read_file:
+    with open(args.test_metrics, "r", encoding="utf-8") as read_file:
         allenact_test_metrics = json.load(read_file)
 
     challenge_metrics = {}
